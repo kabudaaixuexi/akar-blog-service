@@ -34,7 +34,7 @@
               rootItem.innerText = rootStyle;
             }
           }
-          //ºÊ»›UCΩ· ¯
+          //ºÊ»›UCΩ· ¯/
           docEl.style.fontSize = rem + 'px';
         }
         refreshRem();
