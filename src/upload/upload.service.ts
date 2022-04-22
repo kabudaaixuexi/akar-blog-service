@@ -22,7 +22,7 @@ export class UploadService {
         })
         return files.map(ev => (`http://${ServerPath.ip}:${ServerPath.host}/files/packages/${ev.originalname}`))
     }
-
+    
     getFilesNote(type): any {
         if (type == 'note') {
             return getFiles(`${FilesPath.__noteFiles}`).map((file) => {
@@ -31,5 +31,11 @@ export class UploadService {
         }else {
             return []
         }
+    }
+
+    getPackages(): any {
+        return getFiles(`${FilesPath.__packages}`).map((file) => {
+            return `http://${ServerPath.ip}:${ServerPath.host}/files/packages/${file}`
+        })
     }
 }

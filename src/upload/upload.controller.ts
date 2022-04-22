@@ -29,4 +29,13 @@ export class UploadController {
             data: await new UploadService().setPackages(files, 'note')
         }
     }
+
+
+    @Post('getPackages')
+    async getPackages (@Body() body):Promise<any> {
+        return {
+            statusCode: 200,
+            data: await new UploadService().getPackages()
+        }
+    }
 }
