@@ -10,7 +10,13 @@ export class NoteService {
         const result = await Promise.all(
             fls.map(i => readFile(FilesPath.__noteLogs + `/${state.uid}/` + i))
         ) || []
-        return result.map(jn => JSON.parse(jn)).sort((a, b) => (new Date(b.latestTime).valueOf() - new Date(a.latestTime).valueOf()))
+        return result.map(jn => {
+            try {
+                return JSON.parse(jn)
+            }catch {
+                return ""
+            }
+        }).sort((a, b) => (new Date(b.latestTime).valueOf() - new Date(a.latestTime).valueOf()))
     }
 
     async addNote(state): Promise<any>  {
