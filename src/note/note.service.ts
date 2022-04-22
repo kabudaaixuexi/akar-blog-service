@@ -14,7 +14,7 @@ export class NoteService {
             try {
                 return JSON.parse(jn)
             }catch {
-                return ""
+                return {}
             }
         }).sort((a, b) => (new Date(b.latestTime).valueOf() - new Date(a.latestTime).valueOf()))
     }
