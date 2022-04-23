@@ -109,13 +109,21 @@ export function readFile(path: string, options?: { encoding?: BufferEncoding; fl
 
 
 export function getfolio(path: string) {
-    const items = fs.readdirSync(path)
-    return items.filter(item => fs.statSync(`${path}/${item}`).isDirectory())
+    try {
+      const items = fs.readdirSync(path)
+     return items.filter(item => fs.statSync(`${path}/${item}`).isDirectory())
+    }catch {
+      return []
+    }
 }
 
 export function getpack(path: string) {
+   try{
     const items = fs.readdirSync(path)
     return items.filter(item => !fs.statSync(`${path}/${item}`).isDirectory())
+   }catch {
+     return []
+   }
 }
 
 /**
