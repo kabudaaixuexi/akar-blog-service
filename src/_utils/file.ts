@@ -107,6 +107,17 @@ export function readFile(path: string, options?: { encoding?: BufferEncoding; fl
   }
 }
 
+
+export function getfolio(path: string) {
+    const items = fs.readdirSync(path)
+    return items.filter(item => fs.statSync(`${path}/${item}`).isDirectory())
+}
+
+export function getpack(path: string) {
+    const items = fs.readdirSync(path)
+    return items.filter(item => !fs.statSync(`${path}/${item}`).isDirectory())
+}
+
 /**
  * 创建目录
  * @param path

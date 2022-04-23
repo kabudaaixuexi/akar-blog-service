@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { fileBySuffix, appendFile, readFile, getFiles } from '../_utils/file';
+import { mkdir, getfolio,getpack, delDir, getFiles, unlink } from '../_utils/file';
 import { FilesPath, ServerPath } from '../_config'
 import { createWriteStream } from 'fs';
 
@@ -15,13 +15,6 @@ export class UploadService {
             return '上传成功'
         }
     }
-
-    setPackages(files, type) : Promise<any> | any {
-        files.map((file) => {
-            createWriteStream(`${FilesPath.__packages}/${file.originalname}`).write(file.buffer);
-        })
-        return files.map(ev => (`http://${ServerPath.ip}:${ServerPath.host}/files/packages/${ev.originalname}`))
-    }
     
     getFilesNote(type): any {
         if (type == 'note') {
@@ -33,9 +26,35 @@ export class UploadService {
         }
     }
 
-    getPackages(): any {
-        return getFiles(`${FilesPath.__packages}`).map((file) => {
-            return `http://${ServerPath.ip}:${ServerPath.host}/files/packages/${file}`
+    // 个人文件系统
+
+    // 添加文件夹
+    setPortfolio({uid,superior}) : Promise<any> | any {
+        mkdir(`${FilesPath.__packages}/${superior}`)
+        return `http://${ServerPath.ip}:${ServerPath.host}/files/packages/${superior}`
+    }
+    // 获取文件夹
+    getPortfolio({uid, superior}): any {
+        return getfolio(`${FilesPath.__packages}/${superior}`).map(dir => `http://${ServerPath.ip}:${ServerPath.host}/files/packages/${superior}/${dir}`)
+    }
+    // 删除文件夹
+    delPortfolio({uid, superior}): any {
+        delDir(`${FilesPath.__packages}/${superior}`)
+    }
+
+    // 添加文件
+    setPackages(files, {uid, superior}) : Promise<any> | any {
+        console.log(uid, superior);
+        files.map((file) => {
+            createWriteStream(`${FilesPath.__packages}/${superior}/${file.originalname}`).write(file.buffer);
         })
+        return files.map(ev => (`http://${ServerPath.ip}:${ServerPath.host}/files/packages/${superior}/${ev.originalname}`))
+    }
+    getPackages({uid, superior}): any {
+        console.log(uid, superior);
+        return getpack(`${FilesPath.__packages}/${superior}`).map(file => `http://${ServerPath.ip}:${ServerPath.host}/files/packages/${superior}/${file}`)
+    }
+    delPackages({uid, superior}): any {
+        unlink(`${FilesPath.__packages}/${superior}`)
     }
 }
