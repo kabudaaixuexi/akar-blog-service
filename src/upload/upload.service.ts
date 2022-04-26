@@ -44,14 +44,12 @@ export class UploadService {
 
     // 添加文件
     setPackages(files, {uid, superior}) : Promise<any> | any {
-        console.log(uid, superior);
         files.map((file) => {
             createWriteStream(`${FilesPath.__packages}/${superior}/${file.originalname}`).write(file.buffer);
         })
         return files.map(ev => (`http://${ServerPath.ip}:${ServerPath.host}/files/packages/${superior}/${ev.originalname}`))
     }
     getPackages({uid, superior}): any {
-        console.log(uid, superior);
         return getpack(`${FilesPath.__packages}/${superior}`).map(file => `http://${ServerPath.ip}:${ServerPath.host}/files/packages/${superior}/${file}`)
     }
     delPackages({uid, superior}): any {

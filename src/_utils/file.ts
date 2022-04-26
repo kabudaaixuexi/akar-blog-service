@@ -111,7 +111,7 @@ export function readFile(path: string, options?: { encoding?: BufferEncoding; fl
 export function getfolio(path: string) {
     try {
       const items = fs.readdirSync(path)
-     return items.filter(item => fs.statSync(`${path}/${item}`).isDirectory())
+     return items?.filter(item => fs.statSync(`${path}/${item}`)?.isDirectory() || false) || []
     }catch {
       return []
     }
