@@ -5,6 +5,14 @@ import { VerifiEmptyField } from '../_utils/index'
 
 @Controller('note')
 export class NoteController {
+    @Post('getNoteListAll')
+    async getNoteListAll(@Body() body):Promise<any> {
+        return {
+            statusCode: 200,
+            data: await new NoteService().getNoteListAll(body)
+        }
+    }
+
     @Post('getNoteList')
     @VerifiEmptyField(['uid'])
     async getNoteList(@Body() body):Promise<any> {
