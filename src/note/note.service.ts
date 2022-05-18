@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { FilesPath } from '../_config'
 import { getfolio, unlink, readFile, rewriteFile, getFiles, mkdir } from '../_utils/file';
-import { getTime, getUuiD } from '../_utils';
+import { getTime, getUuiD, filterPulishLish } from '../_utils';
 
 @Injectable()
 export class NoteService { 
@@ -22,6 +22,27 @@ export class NoteService {
                 return {}
             }
         }).sort((a, b) => (new Date(b.latestTime).valueOf() - new Date(a.latestTime).valueOf()))
+    }
+
+    async getNoteListPublished(state): Promise<any> {
+        let jsonPathList: any = []
+        getfolio(`${FilesPath.__noteLogs}`).forEach(dir => {
+            jsonPathList = [
+                ...jsonPathList, ...getFiles(FilesPath.__noteLogs + `/${dir}`).map(i => FilesPath.__noteLogs + `/${dir}/` + i)
+            ]
+        })
+        const jsonList = await Promise.all(
+            jsonPathList.map(i => readFile(i))
+        ) || []
+
+        let result = jsonList.map(jn => {
+            try {
+                return JSON.parse(jn)
+            }catch {
+                return {}
+            }
+        }).sort((a, b) => (new Date(b.latestTime).valueOf() - new Date(a.latestTime).valueOf()))
+        return filterPulishLish(result.filter(ev => !!ev.published), state)
     }
 
     async getNoteList(state): Promise<any> {

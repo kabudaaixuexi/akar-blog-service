@@ -1,7 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { UserService } from './user.service';
-import { getTime, getUuiD } from '../_utils/index'
-
+import { getTime, getUuiD, VerifiEmptyField } from '../_utils/index'
 
 @Controller('user')
 export class UserController {
@@ -16,28 +15,52 @@ export class UserController {
         }
     }
 
+    @Post('getUser')
+    @VerifiEmptyField(['uid'])
+    async getUser(@Body() body):Promise<any> {
+        const result = await this.userService.findUserName(body.uid)
+        if(result && result.length) {
+            return {
+                statusCode: 200,
+                data: result[0]
+            }
+        } else {
+            return {
+                statusCode: 999,
+                message: '未找到该用户'
+            }
+        }
+    }
+
     @Post('register')
     async register(@Body() body):Promise<any> {
         const res = await this.userService.findUserName(body.userName)
         if (res.length) {
             return {
                 statusCode: 999,
-                message: '已存在该昵称用户'
+                message: '已存在该昵称用户，换个昵称吧～'
             }
         }
         return {
             statusCode: 200,
-            data: await this.userService.saveOne({
-                userName: body.userName,
-                passWord: body.passWord,
-                nickName: body.nickName,
-                extData: body.extData,
-                photo: body.photo,
-                role:body.role || '0',
-                uid: body.uid || getUuiD(),
-                createdAt: getTime(),
-                updatedAt: getTime()
-            }) 
+            data: {
+                ... await this.userService.saveOne({
+                    userName: body.userName,
+                    passWord: body.passWord,
+                    nickName: body.nickName,
+                    extData: body.extData,
+                    photo: body.photo,
+                    role:body.role || '0',
+                    uid: body.uid || getUuiD(),
+                    createdAt: getTime(),
+                    updatedAt: getTime(),
+                    phone: body.phone || 0
+                }),
+                token:  this.userService.createToken({
+                    userName: body.userName,
+                    passWord: body.passWord,
+                })
+            }
         }
     }
 
@@ -58,7 +81,10 @@ export class UserController {
         }
         return {
             statusCode: 200,
-            data: res[0] 
+            data: {
+                ...res[0],
+                token:  this.userService.createToken(res[0])
+            }
         }
     }
 
@@ -82,6 +108,7 @@ export class UserController {
             id: body.id,
             passWord: body.passWord,
             photo: body.photo,
+            phone: body.phone,
             extData: body.extData,
             role:body.role,
             uid: body.uid,

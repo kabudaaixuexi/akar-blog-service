@@ -13,3 +13,7 @@ export const FilesPath = {
     __noteFiles: join(__dirname, '..', '_static/files/noteFiles').replace(/\\/g, '\\\\'),
     __packages: join(__dirname, '..', '_static/files/packages').replace(/\\/g, '\\\\'),
 }
+
+export const jwtKey = {
+    secret: 'akar',
+  };
