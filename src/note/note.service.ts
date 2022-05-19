@@ -74,6 +74,13 @@ export class NoteService {
         rewriteFile(FilesPath.__noteLogs + `/${state.uid}` + `/${state.noteid}.json`, JSON.stringify(state, null, 2))
     }
 
+    async adornNote(state):  Promise<any>  {
+        const hsbygoneState: any = await readFile(FilesPath.__noteLogs + `/${state.uid}` + `/${state.noteid}.json`)
+        state.createTime = JSON.parse(hsbygoneState || '{}').createTime || getTime()
+        state.latestTime = JSON.parse(hsbygoneState || '{}').latestTime || getTime()
+        rewriteFile(FilesPath.__noteLogs + `/${state.uid}` + `/${state.noteid}.json`, JSON.stringify(state, null, 2))
+    }
+
     async removeNote(state): Promise<any> {
         unlink(FilesPath.__noteLogs + `/${state.uid}` + `/${state.noteid}.json`)
     }

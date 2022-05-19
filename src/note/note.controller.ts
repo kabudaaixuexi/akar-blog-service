@@ -85,6 +85,15 @@ export class NoteController {
         }
     }
 
+    @Post('adornNote')
+    @VerifiEmptyField(['noteid'])
+    async adornNote (@Body() body):Promise<any> {
+        return {
+            statusCode: 200,
+            data: await new NoteService().adornNote(body)
+        }
+    }
+
     @UseGuards( AuthGuard('jwt'))
     @Post('removeNote')
     @VerifiEmptyField(['noteid'])
