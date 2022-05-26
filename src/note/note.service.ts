@@ -42,7 +42,7 @@ export class NoteService {
                 return {}
             }
         }).sort((a, b) => (new Date(b.latestTime).valueOf() - new Date(a.latestTime).valueOf()))
-        return filterPulishLish(result.filter(ev => !!ev.published), state)
+        return filterPulishLish(result, state)
     }
 
     async getNoteList(state): Promise<any> {

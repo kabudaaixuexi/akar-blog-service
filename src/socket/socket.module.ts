@@ -1,8 +1,12 @@
 import { Module } from "@nestjs/common";
-import { UserService } from "./user.service";
-import { UserController } from "./user.controller";
+
+// soc
+import { SocketService } from "./socket.service";
+import { SocketController } from "./socket.controller";
+import { SocketGateway } from './ws.gateway'
+
+// sql
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { User } from "../_entity/user.entity";
 import { News } from "../_entity/news.entity";
 
 // jwt
@@ -11,7 +15,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { jwtKey } from "../_config";
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, News]),
+    TypeOrmModule.forFeature([News]),
     JwtModule.register({
       //生成token的key
       secret: jwtKey.secret,
@@ -19,11 +23,11 @@ import { jwtKey } from "../_config";
       // 或是在createToken时候设定
       signOptions: {
         //token的有效时长
-        expiresIn: "30d",
+        // expiresIn: "7d",
       },
     }),
   ],
-  providers: [UserService, JwtStrategy],
-  controllers: [UserController],
+  providers: [SocketService, JwtStrategy, SocketGateway],
+  controllers: [SocketController],
 })
-export class UserModule {}
+export class SocketModule {}

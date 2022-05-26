@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Post, Render, Response, HttpException, HttpStatus, UseInterceptors,UploadedFiles } from '@nestjs/common';
+import { Body, Controller, Query, Post, UseGuards, Request, HttpException, HttpStatus, UseInterceptors,UploadedFiles } from '@nestjs/common';
 import { FileInterceptor,FilesInterceptor,AnyFilesInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
 import { VerifiEmptyField } from '../_utils/index'
+// jwt
+import { AuthGuard } from '@nestjs/passport';
 @Controller('upload')
 export class UploadController {
     @Post('setFilesNote')
@@ -21,61 +23,114 @@ export class UploadController {
         }
     }
 
-    // 个人文件系统
-
+    // 用户文件系统
+    @UseGuards( AuthGuard('jwt'))
     @Post('setPortfolio') // 添加文件夹
-    @VerifiEmptyField(['uid', 'superior'])
-    async setPortfolio(@Body() body){
+    async setPortfolio(@Request() token, @Query() query){
+        if(!query.superior) {
+            return {
+                statusCode: 999,
+                message: `文件夹类型不能为空`,
+            }
+        }
         return {
             statusCode: 200,
-            data: await new UploadService().setPortfolio(body)
+            data: await new UploadService().setPortfolio({
+                uid: token.user.uid,
+                superior: query.superior
+            })
         }
     }
 
+    @UseGuards( AuthGuard('jwt'))
     @Post('getPortfolio') // 获取文件夹
-    @VerifiEmptyField(['uid', 'superior'])
-    async getPortfolio (@Body() body):Promise<any> {
+    async getPortfolio (@Request() token, @Query() query):Promise<any> {
+        if(!query.superior) {
+            return {
+                statusCode: 999,
+                message: `文件夹类型不能为空`,
+            }
+        }
         return {
             statusCode: 200,
-            data: await new UploadService().getPortfolio(body)
+            data: await new UploadService().getPortfolio({
+                uid: token.user.uid,
+                superior: query.superior
+            })
         }
     }
 
+    @UseGuards( AuthGuard('jwt'))
     @Post('delPortfolio') // 删除文件夹
-    @VerifiEmptyField(['uid', 'superior'])
-    async delPortfolio (@Body() body):Promise<any> {
+    async delPortfolio (@Request() token, @Query() query):Promise<any> {
+        if(!query.superior) {
+            return {
+                statusCode: 999,
+                message: `文件夹类型不能为空`,
+            }
+        }
         return {
             statusCode: 200,
-            data: await new UploadService().delPortfolio(body)
+            data: await new UploadService().delPortfolio({
+                uid: token.user.uid,
+                superior: query.superior
+            })
         }
     }
 
+    @UseGuards( AuthGuard('jwt'))
     @Post('setPackages') // 添加文件
     @UseInterceptors(AnyFilesInterceptor())
-    async setPackages(@UploadedFiles() files, @Body() body){
+    async setPackages(@UploadedFiles() files, @Request() token, @Query() query ){
+        if(!query.superior) {
+            return {
+                statusCode: 999,
+                message: `文件夹类型不能为空`,
+            }
+        }
         return {
             statusCode: 200,
-            data: await new UploadService().setPackages(files, body)
+            data: await new UploadService().setPackages(files, {
+                uid: token.user.uid,
+                superior: query.superior
+            })
         }
     }
 
     
-
+    @UseGuards( AuthGuard('jwt'))
     @Post('getPackages') // 获取文件
-    @VerifiEmptyField(['uid', 'superior'])
-    async getPackages (@Body() body):Promise<any> {
+    async getPackages (@Query() query, @Request() token):Promise<any> {
+        if(!query.superior) {
+            return {
+                statusCode: 999,
+                message: `文件夹类型不能为空`,
+            }
+        }
         return {
             statusCode: 200,
-            data: await new UploadService().getPackages(body)
+            data: await new UploadService().getPackages({
+                uid: token.user.uid,
+                superior: query.superior
+            })
         }
     }
 
+    @UseGuards( AuthGuard('jwt'))
     @Post('delPackages') // 删除文件
-    @VerifiEmptyField(['uid', 'superior'])
-    async delPackage (@Body() body):Promise<any> {
+    async delPackage (@Query() query, @Request() token):Promise<any> {
+        if(!query.superior) {
+            return {
+                statusCode: 999,
+                message: `文件夹类型不能为空`,
+            }
+        }
         return {
             statusCode: 200,
-            data: await new UploadService().delPackages(body)
+            data: await new UploadService().delPackages({
+                uid: token.user.uid,
+                superior: query.superior
+            })
         }
     }
 }

@@ -30,29 +30,30 @@ export class UploadService {
 
     // 添加文件夹
     setPortfolio({uid,superior}) : Promise<any> | any {
-        mkdir(`${FilesPath.__packages}/${superior}`)
-        return `http://${ServerPath.ip}:${ServerPath.host}/files/packages/${superior}`
+        mkdir(`${FilesPath.__packages}/${uid}/${superior}`)
+        return `http://${ServerPath.ip}:${ServerPath.host}/files/packages/${uid}/${superior}`
     }
     // 获取文件夹
     getPortfolio({uid, superior}): any {
-        return getfolio(`${FilesPath.__packages}/${superior}`).map(dir => `http://${ServerPath.ip}:${ServerPath.host}/files/packages/${superior}/${dir}`)
+        return getfolio(`${FilesPath.__packages}/${uid}/${superior}`).map(dir => `http://${ServerPath.ip}:${ServerPath.host}/files/packages/${uid}/${superior}/${dir}`)
     }
     // 删除文件夹
     delPortfolio({uid, superior}): any {
-        delDir(`${FilesPath.__packages}/${superior}`)
+        delDir(`${FilesPath.__packages}/${uid}/${superior}`)
     }
 
     // 添加文件
     setPackages(files, {uid, superior}) : Promise<any> | any {
+        mkdir(`${FilesPath.__packages}/${uid}/${superior}`)
         files.map((file) => {
-            createWriteStream(`${FilesPath.__packages}/${superior}/${file.originalname}`).write(file.buffer);
+            createWriteStream(`${FilesPath.__packages}/${uid}/${superior}/${file.originalname}`).write(file.buffer);
         })
-        return files.map(ev => (`http://${ServerPath.ip}:${ServerPath.host}/files/packages/${superior}/${ev.originalname}`))
+        return files.map(ev => (`http://${ServerPath.ip}:${ServerPath.host}/files/packages/${uid}/${superior}/${ev.originalname}`))
     }
     getPackages({uid, superior}): any {
-        return getpack(`${FilesPath.__packages}/${superior}`).map(file => `http://${ServerPath.ip}:${ServerPath.host}/files/packages/${superior}/${file}`)
+        return getpack(`${FilesPath.__packages}/${uid}/${superior}`).map(file => `http://${ServerPath.ip}:${ServerPath.host}/files/packages/${uid}/${superior}/${file}`)
     }
     delPackages({uid, superior}): any {
-        unlink(`${FilesPath.__packages}/${superior}`)
+        unlink(`${FilesPath.__packages}/${uid}/${superior}`)
     }
 }

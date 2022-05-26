@@ -100,9 +100,10 @@ export function VerifiEmptyField(fields: any[]) {
  * 8 -- 浏览量前二十 -- {} -- []
  * 9 -- 随机抽取二十篇文章 -- {} -- []
  */
-export function filterPulishLish(pulishList, payload) {
+export function filterPulishLish(list = [], payload) {
   const { type } = payload;
-  if (!type) {
+  const pulishList: any = list.filter(ev => !!ev.published)
+  if (type == undefined) {
     return pulishList;
   }
   let result: any = [];
@@ -114,44 +115,44 @@ export function filterPulishLish(pulishList, payload) {
       result = pulishList.filter((ev) => ev.drawe == payload.drawe);
       break;
     case 2:
-      result = pulishList.find((ev) => ev.noteid == payload.noteid) || {};
+      result = list.find((ev) => ev.noteid == payload.noteid) || {};
       break;
     case 3:
       result = pulishList.filter((ev) => {
         const stars = ev.extData?.star || [];
-        return stars.incluse(payload.uid);
+        return stars.includes(payload.uid);
       });
       break;
     case 4:
       result = pulishList.filter((ev) => {
         const takes = ev.extData?.take || [];
-        return takes.incluse(payload.uid);
+        return takes.includes(payload.uid);
       });
       break;
     case 5:
       result = pulishList.filter((ev) => {
         const skims = ev.extData?.skim || [];
-        return skims.incluse(payload.uid);
+        return skims.includes(payload.uid);
       });
       break;
     case 6:
       result = pulishList
         .sort((a, b) => {
-          (b.extData?.star || []).length - (a.extData?.star || []).length;
+          return (b.extData?.star || []).length - (a.extData?.star || []).length;
         })
         .slice(0, 20);
       break;
     case 7:
       result = pulishList
         .sort((a, b) => {
-          (b.extData?.take || []).length - (a.extData?.take || []).length;
+          return (b.extData?.take || []).length - (a.extData?.take || []).length;
         })
         .slice(0, 20);
       break;
     case 8:
       result = pulishList
         .sort((a, b) => {
-          (b.extData?.skim || []).length - (a.extData?.skim || []).length;
+          return (b.extData?.skim || []).length - (a.extData?.skim || []).length;
         })
         .slice(0, 20);
       break;

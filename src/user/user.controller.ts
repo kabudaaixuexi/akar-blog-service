@@ -88,6 +88,23 @@ export class UserController {
         }
     }
 
+    @Post('decorate')
+    @VerifiEmptyField(['uid', 'extData'])
+    async decorate(@Body() body):Promise<any> {
+        const target = await this.userService.findUserName(body.uid)
+        console.log(target[0]);
+        console.log(body.extData);
+        
+        // target
+        await this.userService.updateOne({
+            ...target[0],
+            extData: body.extData,
+        })
+        return {
+            statusCode: 200
+        }
+    }
+
     @Post('modify')
     async modify(@Body() body):Promise<any> {
         const res01 = await this.userService.findId(body.id || -1)
