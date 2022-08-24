@@ -92,9 +92,6 @@ export class UserController {
     @VerifiEmptyField(['uid', 'extData'])
     async decorate(@Body() body):Promise<any> {
         const target = await this.userService.findUserName(body.uid)
-        console.log(target[0]);
-        console.log(body.extData);
-        
         // target
         await this.userService.updateOne({
             ...target[0],

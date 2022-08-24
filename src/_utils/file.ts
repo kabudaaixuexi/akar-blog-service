@@ -107,11 +107,19 @@ export function readFile(path: string, options?: { encoding?: BufferEncoding; fl
   }
 }
 
-
-export function getfolio(path: string) {
+const path = require('path');
+export function getfolio(p: string) {
     try {
-      const items = fs.readdirSync(path)
-     return items?.filter(item => fs.statSync(`${path}/${item}`)?.isDirectory() || false) || []
+      let names = fs.readdirSync(p, { withFileTypes: true })
+      const folios = names.map(folder => {
+          const fullFolderPath = path.join(path.resolve(p), folder.name);
+          const stats = fs.statSync(fullFolderPath);
+          return { name: folder.name, ctimeMs: stats.ctimeMs }
+      }).sort((a, b) => {
+          return a.ctimeMs - b.ctimeMs;
+      })
+      const items = folios.map(floder => floder.name)
+      return items?.filter(item => fs.statSync(`${p}/${item}`)?.isDirectory() || false) || []
     }catch {
       return []
     }

@@ -27,12 +27,6 @@ export class UploadController {
     @UseGuards( AuthGuard('jwt'))
     @Post('setPortfolio') // 添加文件夹
     async setPortfolio(@Request() token, @Query() query){
-        if(!query.superior) {
-            return {
-                statusCode: 999,
-                message: `文件夹类型不能为空`,
-            }
-        }
         return {
             statusCode: 200,
             data: await new UploadService().setPortfolio({
@@ -45,12 +39,6 @@ export class UploadController {
     @UseGuards( AuthGuard('jwt'))
     @Post('getPortfolio') // 获取文件夹
     async getPortfolio (@Request() token, @Query() query):Promise<any> {
-        if(!query.superior) {
-            return {
-                statusCode: 999,
-                message: `文件夹类型不能为空`,
-            }
-        }
         return {
             statusCode: 200,
             data: await new UploadService().getPortfolio({
@@ -63,12 +51,6 @@ export class UploadController {
     @UseGuards( AuthGuard('jwt'))
     @Post('delPortfolio') // 删除文件夹
     async delPortfolio (@Request() token, @Query() query):Promise<any> {
-        if(!query.superior) {
-            return {
-                statusCode: 999,
-                message: `文件夹类型不能为空`,
-            }
-        }
         return {
             statusCode: 200,
             data: await new UploadService().delPortfolio({
@@ -79,15 +61,35 @@ export class UploadController {
     }
 
     @UseGuards( AuthGuard('jwt'))
-    @Post('setPackages') // 添加文件
-    @UseInterceptors(AnyFilesInterceptor())
-    async setPackages(@UploadedFiles() files, @Request() token, @Query() query ){
-        if(!query.superior) {
-            return {
-                statusCode: 999,
-                message: `文件夹类型不能为空`,
-            }
+    @Post('renamePortfolio') // 文件夹重命名
+    async renamePortfolio (@Request() token, @Query() query):Promise<any> {
+        return {
+            statusCode: 200,
+            data: await new UploadService().renamePortfolio({
+                uid: token.user.uid,
+                superior: query.superior,
+                name: query.name
+            })
         }
+    }
+    @UseGuards( AuthGuard('jwt'))
+    @Post('renamePackage') // 文件重命名
+    async renamePackage (@Request() token, @Query() query):Promise<any> {
+        return {
+            statusCode: 200,
+            data: await new UploadService().renamePackage({
+                uid: token.user.uid,
+                superior: query.superior,
+                name: query.name
+            })
+        }
+    }
+    
+
+    @UseInterceptors(AnyFilesInterceptor())
+    @UseGuards( AuthGuard('jwt'))
+    @Post('setPackages') // 添加文件
+    async setPackages(@UploadedFiles() files, @Request() token, @Query() query ){
         return {
             statusCode: 200,
             data: await new UploadService().setPackages(files, {
@@ -101,12 +103,6 @@ export class UploadController {
     @UseGuards( AuthGuard('jwt'))
     @Post('getPackages') // 获取文件
     async getPackages (@Query() query, @Request() token):Promise<any> {
-        if(!query.superior) {
-            return {
-                statusCode: 999,
-                message: `文件夹类型不能为空`,
-            }
-        }
         return {
             statusCode: 200,
             data: await new UploadService().getPackages({
@@ -119,12 +115,6 @@ export class UploadController {
     @UseGuards( AuthGuard('jwt'))
     @Post('delPackages') // 删除文件
     async delPackage (@Query() query, @Request() token):Promise<any> {
-        if(!query.superior) {
-            return {
-                statusCode: 999,
-                message: `文件夹类型不能为空`,
-            }
-        }
         return {
             statusCode: 200,
             data: await new UploadService().delPackages({
