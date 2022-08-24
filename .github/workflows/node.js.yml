@@ -18,14 +18,12 @@ jobs:
     # - name: npm install
       # 步骤执行指令
       # run: npm install
-    # - name: npm run build
-    #   run: npm run build
+    - name: npm run start
+      run: npm run start
     # 命名这个任务为发布Deploy
     - name: Deploy
       # 因为构建之后，需要把代码上传到服务器上，所以需要连接到ssh，并且做一个拷贝操作
       uses: cross-the-world/scp-pipeline@master
-      run: |
-          mkdir -p test
       env:
         WELCOME: "ssh scp ssh pipelines"
         LASTSSH: "Doing something after copying"
@@ -35,5 +33,5 @@ jobs:
         pass: ${{ secrets.REMOTE_PASS }}
         # connect_timeout: 10s
         local: '*'
-        remote: /node/note-common-test
+        remote: /node/note-common
         exclude: "dist/*"
