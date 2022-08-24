@@ -35,6 +35,3 @@ jobs:
         local: '/'
         remote: /node/note-common-test
         exclude: "/dist/"
-    - name: start
-        run: |
-          mkdir -p test
