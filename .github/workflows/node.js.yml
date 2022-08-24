@@ -32,6 +32,6 @@ jobs:
         user: ${{ secrets.REMOTE_NAME }}
         pass: ${{ secrets.REMOTE_PASS }}
         # connect_timeout: 10s
-        local: '/'
+        local: '*'
         remote: /node/note-common-test
-        exclude: "/dist/"
+        exclude: "dist/*"
