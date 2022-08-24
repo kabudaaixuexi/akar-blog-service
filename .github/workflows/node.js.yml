@@ -33,5 +33,3 @@ jobs:
         local: '*'
         remote: /node/note-common
         exclude: "dist/*"
-    - name: npm run start
-      run: npm run start
