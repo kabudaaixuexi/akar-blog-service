@@ -101,9 +101,8 @@ export class UserController {
     @Post('modify')
     async modify(@Body() body):Promise<any> {
         const res = await this.userService.findUserName(body.userName)
-        console.log(res.id,body.id);
         
-        if (body.userName && res.length && res.id != body.id) {
+        if (body.userName && res.length && res[0].id != body.id) {
             return {
                 statusCode:  999,
                 message: '已存在重复昵称' 
