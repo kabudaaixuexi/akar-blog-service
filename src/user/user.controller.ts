@@ -47,14 +47,10 @@ export class UserController {
                 ... await this.userService.saveOne({
                     userName: body.userName,
                     passWord: body.passWord,
-                    nickName: body.nickName,
-                    extData: body.extData,
                     photo: body.photo,
-                    role:body.role || '0',
                     uid: body.uid || getUuiD(),
                     createdAt: getTime(),
                     updatedAt: getTime(),
-                    phone: body.phone || 0
                 }),
                 token:  this.userService.createToken({
                     userName: body.userName,
@@ -104,32 +100,35 @@ export class UserController {
 
     @Post('modify')
     async modify(@Body() body):Promise<any> {
-        const res01 = await this.userService.findId(body.id || -1)
-        const res02 = await this.userService.findUserName(body.userName)
-        if (body.userName && res02.length) {
+        const res = await this.userService.findUserName(body.userName)
+        if (body.userName && res.length && res.id != body.id) {
             return {
                 statusCode:  999,
                 message: '已存在重复昵称' 
             }
         }
-        if (!res01.length) {
-            return {
-                statusCode: 999,
-                message: '未找到该id对应的账号'
-            }
-        }
         await this.userService.updateOne({
             id: body.id,
+            userName: body.userName,
             passWord: body.passWord,
             photo: body.photo,
             phone: body.phone,
             extData: body.extData,
-            role:body.role,
+            role:body.role || 0,
             uid: body.uid,
-            useNick: 1,
-            nickName: body.userName || res01.nickName || res01.userName,
             createdAt: body.createdAt,
-            updatedAt: getTime()
+            updatedAt: getTime(),
+
+            userIntro: body.userIntro,
+            userGender: body.userGender,
+            userEmail: body.userEmail,
+            userPhone: body.userPhone,
+            userRegion: body.userRegion,
+            userOffice: body.userOffice,
+            userBirth: body.userBirth,
+            showExtend: body.showExtend,
+            showLinks: body.showLinks,
+            userLinks: body.userLinks
         })
         const data = await this.userService.findId(body.id) || []
         return {

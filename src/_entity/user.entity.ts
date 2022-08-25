@@ -15,13 +15,13 @@ export class User {
   passWord: string;
 
   @Column()
-  nickName: string;
+  userGender: string;
 
   @Column()
   photo: string;
 
   @Column()
-  role: string;
+  userIntro: string;
 
   @Column()
   createdAt: string;
@@ -33,5 +33,26 @@ export class User {
   extData: string;
 
   @Column()
-  useNick: string;
+  userEmail: string;
+
+  @Column()
+  userPhone: string;
+
+  @Column()
+  userRegion: string;
+
+  @Column()
+  userOffice: string;
+
+  @Column()
+  userBirth: string;
+
+  @Column()
+  showExtend: boolean;
+
+  @Column()
+  showLinks: boolean;
+
+  @Column()
+  userLinks: string;
 }
