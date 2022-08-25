@@ -21,6 +21,9 @@ export class User {
   photo: string;
 
   @Column()
+  role: string;
+
+  @Column()
   userIntro: string;
 
   @Column()
