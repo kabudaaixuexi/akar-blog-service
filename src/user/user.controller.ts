@@ -20,9 +20,11 @@ export class UserController {
     async getUser(@Body() body):Promise<any> {
         const result = await this.userService.findUserName(body.uid)
         if(result && result.length) {
+            const data = result[0]
+            delete data.passWord
             return {
                 statusCode: 200,
-                data: result[0]
+                data
             }
         } else {
             return {
