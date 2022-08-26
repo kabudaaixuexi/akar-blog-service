@@ -128,6 +128,7 @@ export class UserController {
             userOffice: body.userOffice,
             userBirth: body.userBirth,
             showExtend: body.showExtend,
+            userExtend: body.userExtend,
             showLinks: body.showLinks,
             userLinks: body.userLinks
         })

@@ -54,6 +54,9 @@ export class User {
   showExtend: boolean;
 
   @Column()
+  userExtend: string;
+
+  @Column()
   showLinks: boolean;
 
   @Column()
