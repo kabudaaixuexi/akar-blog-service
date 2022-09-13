@@ -11,6 +11,6 @@ export class ExcessService {
                 expl: file.name,
                 link: `http://${ServerPath.ip}:${ServerPath.host}/files/rotations/${file}`
             }
-        }).filter(httpFile => httpFile.indexOf('.DS_Store') === -1 )
+        })
     }
 }
