@@ -8,7 +8,7 @@ export class ExcessService {
             return {
                 uri: `http://${ServerPath.ip}:${ServerPath.host}/files/rotations/${file}`,
                 type: 0,
-                expl: file.name,
+                expl: file.split('.')[0],
                 link: `http://${ServerPath.ip}:${ServerPath.host}/files/rotations/${file}`
             }
         })
