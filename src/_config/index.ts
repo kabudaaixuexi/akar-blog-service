@@ -13,6 +13,7 @@ export const FilesPath = {
     __files: join(__dirname, '..', '_static/files').replace(/\\/g, '\\\\'),
     __noteFiles: join(__dirname, '..', '_static/files/noteFiles').replace(/\\/g, '\\\\'),
     __packages: join(__dirname, '..', '_static/files/packages').replace(/\\/g, '\\\\'),
+    __rotations: join(__dirname, '..', '_static/files/rotations').replace(/\\/g, '\\\\'),
 }
 
 export const jwtKey = {
