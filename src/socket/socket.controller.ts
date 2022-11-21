@@ -38,7 +38,6 @@ export class SocketController {
     // @UseGuards( AuthGuard('jwt'))
     // @Post('getNewsBySelf')
     // async getNewsBySelf( @Body() body,@Request() token,):Promise<any> {
-    //     console.log(token.user.uid);
     //     return {
     //         statusCode: 200,
     //         data: await  this.socketService.findBySelf(token.user.uid)
