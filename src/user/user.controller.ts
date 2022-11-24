@@ -115,7 +115,6 @@ export class UserController {
             userName: body.userName,
             passWord: body.passWord,
             userPortrait: body.userPortrait,
-            phone: body.phone,
             extData: body.extData,
             role:body.role || 0,
             uid: body.uid,
