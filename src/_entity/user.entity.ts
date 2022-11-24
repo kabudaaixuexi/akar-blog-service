@@ -18,7 +18,7 @@ export class User {
   userGender: string;
 
   @Column()
-  photo: string;
+  userPortrait: string;
 
   @Column()
   role: string;

@@ -49,7 +49,7 @@ export class UserController {
                 ... await this.userService.saveOne({
                     userName: body.userName,
                     passWord: body.passWord,
-                    photo: body.photo,
+                    userPortrait: body.userPortrait,
                     uid: body.uid || getUuiD(),
                     createdAt: getTime(),
                     updatedAt: getTime(),
@@ -114,7 +114,7 @@ export class UserController {
             id: body.id,
             userName: body.userName,
             passWord: body.passWord,
-            photo: body.photo,
+            userPortrait: body.userPortrait,
             phone: body.phone,
             extData: body.extData,
             role:body.role || 0,
