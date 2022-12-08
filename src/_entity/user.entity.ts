@@ -61,4 +61,7 @@ export class User {
 
   @Column()
   userLinks: string;
+
+  @Column()
+  showAnnexs: boolean;
 }
