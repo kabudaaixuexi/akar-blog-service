@@ -131,7 +131,8 @@ export class UserController {
             showExtend: body.showExtend,
             userExtend: body.userExtend,
             showLinks: body.showLinks,
-            userLinks: body.userLinks
+            userLinks: body.userLinks,
+            showAnnexs: body.showAnnexs
         })
         const data = await this.userService.findId(body.id) || []
         return {
