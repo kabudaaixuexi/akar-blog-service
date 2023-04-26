@@ -1,9 +1,9 @@
 {
     "type": "mysql",
-    "host": "124.220.16.124",
+    "host": "localhost",
     "port": 3306,
     "username": "root",
-    "password": "mima8888",
-    "database": "note",
+    "password": "KaCa1234",
+    "database": "akar",
     "entities": ["dist/**/*.entity{.ts,.js}"]
 }

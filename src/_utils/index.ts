@@ -64,6 +64,11 @@ export function getUuiD(randomLength = Math.random()) {
 }
 
 // zsq
+export function Readonly (...[,,descriptor]) {
+  descriptor.writable = false;
+  return descriptor;
+}
+
 export function VerifiEmptyField(fields: any[]) {
   return function (
     target: any,
