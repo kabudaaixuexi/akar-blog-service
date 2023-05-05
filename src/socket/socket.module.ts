@@ -8,6 +8,7 @@ import { SocketGateway } from './ws.gateway'
 // sql
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { News } from "../_entity/news.entity";
+import { Forum } from "../_entity/forum.entity";
 
 // jwt
 import { JwtStrategy } from "../jwt/jwt.strategy";
@@ -15,7 +16,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { jwtKey } from "../_config";
 @Module({
   imports: [
-    TypeOrmModule.forFeature([News]),
+    TypeOrmModule.forFeature([News, Forum]),
     JwtModule.register({
       //生成token的key
       secret: jwtKey.secret,

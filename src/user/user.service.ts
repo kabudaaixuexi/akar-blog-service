@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getConnection } from 'typeorm';
-import { User } from '../_entity/user.entity'
+import { User } from '../_entity/users.entity'
 
 // jwt
 import { JwtService } from '@nestjs/jwt';
@@ -34,8 +34,8 @@ export class UserService {
         return this.usersRepository.find({ where: { userName } });
     }
 
-    findId(id): Promise<any> {
-        return this.usersRepository.find({ where: { id } });
+    findUid(uid): Promise<any> {
+        return this.usersRepository.find({ where: { uid } });
     }
 
     async remove(id: string): Promise<void> {

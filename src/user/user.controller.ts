@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { UserService } from './user.service';
-import { getTime, getUuiD, VerifiEmptyField } from '../_utils/index'
+import { getTime, getUuiD, VerifiEmptyField, getRandomArrayElements } from '../_utils/index'
 
 @Controller('user')
 export class UserController {
@@ -9,16 +9,29 @@ export class UserController {
 
     @Post('getUserList')
     async getUserList(@Body() body):Promise<any> {
-        return {
-            statusCode: 200,
-            data: await this.userService.findAll()
+        const { type } = body
+        if (type == 1) { // 推荐
+            return {
+                statusCode: 200,
+                data:(await this.userService.findAll()).map(({
+                    uid, userName, userPortrait, userIntro, createdAt, userOffice, extData
+                }) => ({
+                    uid, userName, userPortrait, userIntro, createdAt, userOffice, extData
+                }))
+            }
+        } else {
+            return {
+                statusCode: 200,
+                data: await this.userService.findAll()
+            }
         }
     }
 
-    @Post('getUser')
+    @Post('getUserInfo')
     @VerifiEmptyField(['uid'])
     async getUser(@Body() body):Promise<any> {
-        const result = await this.userService.findUserName(body.uid)
+        const { uid } = body
+        const result = await this.userService.findUid(uid)
         if(result && result.length) {
             const data = result[0]
             delete data.passWord
@@ -50,7 +63,7 @@ export class UserController {
                     userName: body.userName,
                     passWord: body.passWord,
                     userPortrait: body.userPortrait,
-                    uid: body.uid || getUuiD(),
+                    uid: getUuiD(),
                     createdAt: getTime(),
                     updatedAt: getTime(),
                 }),
@@ -89,7 +102,7 @@ export class UserController {
     @Post('decorate')
     @VerifiEmptyField(['uid', 'extData'])
     async decorate(@Body() body):Promise<any> {
-        const target = await this.userService.findUserName(body.uid)
+        const target = await this.userService.findUid(body.uid)
         // target
         await this.userService.updateOne({
             ...target[0],
@@ -134,7 +147,7 @@ export class UserController {
             userLinks: body.userLinks,
             showAnnexs: body.showAnnexs
         })
-        const data = await this.userService.findId(body.id) || []
+        const data = await this.userService.findUid(body.uid) || []
         return {
             statusCode: 200,
             data: data[0]

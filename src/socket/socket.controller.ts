@@ -12,49 +12,52 @@ export class SocketController {
     async getNewsAll(@Body() body):Promise<any> {
         return {
             statusCode: 200,
-            data: await  this.socketService.findAll()
+            data: await  this.socketService.NewsfindAll()
         }
     }
 
-    // @UseGuards( AuthGuard('jwt'))
-    // @Post('getNewsByUser')
-    // @VerifiEmptyField(['uid'])
-    // async getNewsByUser( @Body() body,@Request() token,):Promise<any> {
-    //     console.log(body.uid, token.user.uid);
-        
-    //     const [res01, res02] = await Promise.all([
-    //         this.socketService.findByUid(body.uid, token.user.uid),
-    //         this.socketService.findToUid(body.uid, token.user.uid)
-    //     ])
-    //     return {
-    //         statusCode: 200,
-    //         data: [
-    //             ...res01,
-    //             ...res02
-    //         ]
-    //     }
-    // }
+    @Post('getForumAll')
+    async getForumAll(@Body() body):Promise<any> {
+        return {
+            statusCode: 200,
+            data: (await  this.socketService.ForumfindAll()).sort(function(a: any, b: any){
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            })
+        }
+    }
 
-    // @UseGuards( AuthGuard('jwt'))
-    // @Post('getNewsBySelf')
-    // async getNewsBySelf( @Body() body,@Request() token,):Promise<any> {
-    //     return {
-    //         statusCode: 200,
-    //         data: await  this.socketService.findBySelf(token.user.uid)
-    //     }
-    // }
+    @Post('editForum')
+    async editForum(@Body() body):Promise<any> {
+        const res = await this.socketService.ForumfindById({ forumId: body.forumId })
+        const data = {
+            ...res[0],
+            extData: body.extData
+        }
+        return {
+            statusCode: 200,
+            data: await this.socketService.ForumUpdateOne(data)  
+        }
+    }
+
+    @Post('deleteForum')
+    async deleteForum(@Body() body):Promise<any> {
+        return {
+            statusCode: 200,
+            data: await this.socketService.ForumDeleteOne(body)  
+        }
+    }
 
     @UseGuards( AuthGuard('jwt'))
     @Post('getNewsUserList')
     async getNewsUserList( @Body() body,@Request() token,):Promise<any> {
-        const res = await  this.socketService.findBySelf(token.user.uid)
+        const res = await  this.socketService.NewsfindBySelf(token.user.uid)
         let keys = Array.from(new Set([
             ...res.map(ev => ev.formUserId),
             ...res.map(ev => ev.sid)
         ])).filter(ev => ev !== token.user.uid)
 
         const res01 = (await Promise.all(
-            keys.map(ei => this.socketService.findByUid(ei, token.user.uid))
+            keys.map(ei => this.socketService.NewsfindByUid(ei, token.user.uid))
         ))
         // 统一根据时间正序
         const res02 = res01.map(item => {

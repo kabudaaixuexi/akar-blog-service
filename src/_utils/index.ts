@@ -167,7 +167,7 @@ export function filterPulishLish(list = [], payload) {
   }
   return result;
 }
-function getRandomArrayElements(arr, count) {
+export function getRandomArrayElements(arr = [], count) {
     var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
     while (i-- > min) {
         index = Math.floor((i + 1) * Math.random());
@@ -175,6 +175,6 @@ function getRandomArrayElements(arr, count) {
         shuffled[index] = shuffled[i];
         shuffled[i] = temp;
     }
-    return shuffled.slice(min);
+    return shuffled.slice(min).filter((e) => !!e);
   }
   

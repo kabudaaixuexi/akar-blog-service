@@ -1,8 +1,8 @@
 import { join } from 'path'
 export const ServerPath = {
     host: 8099,
-    ip: 'localhost'
-    // ip: '124.220.16.124'
+    // ip: 'localhost'
+    ip: '60.204.134.228'
 } 
 export const FilesPath = {
     __static: join(__dirname, '..', '_static').replace(/\\/g, '\\\\'),
